@@ -8,27 +8,12 @@
         <mkdir dir="${build.dir}"/> 
         <echo message="Build directory created at ${build.dir}"/>
         
-
-        <copy todir="${build.dir}">
-            <fileset dir="${src.dir}">
-                <include name="**/*.py"/>
-            </fileset>
-        </copy>
-        
-        <echo message="Source files copied to ${build.dir}"/>
     </target>
 
     <target name="dist" depends="build">
         <mkdir dir="${dist.dir}"/> 
         <echo message="Dist directory created at ${dist.dir}"/>
   
-        <copy todir="${dist.dir}">
-            <fileset dir="${build.dir}">
-                <include name="**/*.py"/>
-            </fileset>
-        </copy>
-        
-        <echo message="Files copied to ${dist.dir}"/>
     </target>
 
     <target name="test" depends="build">

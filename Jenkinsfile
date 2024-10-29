@@ -2,29 +2,51 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "lunariin/orderstackapp"  
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
+        DOCKER_USERNAME = 'lunariin'
+        DOCKER_PASSWORD = credentials('dockerhub-credentials') 
+        IMAGE_NAME = 'lunariin/orderstackapp'
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+              
+                git url: 'https://github.com/EvaCherkun/OrderStackApp'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
-                    echo 'Building Docker image...'
-                    sh 'docker build -t ${DOCKER_IMAGE}:latest .'
+                    
+                    sh "docker build -t ${IMAGE_NAME}:latest ."
                 }
             }
         }
-        
-        stage('Push Docker Image to Docker Hub') {
+
+        stage('Docker Login') {
             steps {
                 script {
-                    docker.withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
-                        echo 'Pushing Docker image to Docker Hub...'
-                        sh 'docker push ${DOCKER_IMAGE}:latest'
-                    }
+                  
+                    sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
                 }
             }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                 
+                    sh "docker push ${IMAGE_NAME}:latest"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+        
+            sh 'docker logout'
         }
     }
 }

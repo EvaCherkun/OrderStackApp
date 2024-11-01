@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_USERNAME = 'lunariiin'
         DOCKER_PASSWORD = credentials('dockerhub-credentials')
-        IMAGE_NAME = 'lunariin/orderstackapp'
+        IMAGE_NAME = 'lunariiin/orderstackapp'
     }
 
     stages {
@@ -25,10 +25,9 @@ pipeline {
         stage('Docker Login') {
             steps {
                 script {
+                    // Store the password in a variable and use it directly
                     bat """
-                    echo %DOCKER_PASSWORD% > password.txt
-                    docker login -u %DOCKER_USERNAME% --password-stdin < password.txt
-                    del password.txt
+                    echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
                     """
                 }
             }

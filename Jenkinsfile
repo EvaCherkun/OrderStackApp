@@ -25,4 +25,29 @@ pipeline {
         stage('Docker Login') {
             steps {
                 script {
-                    bat "echo %DOCKER_PASSWORD% | docker l
+                    bat """
+                    echo %DOCKER_PASSWORD% > password.txt
+                    docker login -u %DOCKER_USERNAME% --password-stdin < password.txt
+                    del password.txt
+                    """
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    bat "docker push ${IMAGE_NAME}:latest"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                bat 'docker logout'
+            }
+        }
+    }
+}

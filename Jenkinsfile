@@ -3,8 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'docker-image'
-        DOCKER_USERNAME = 'lunariiin' 
-        DOCKER_PASSWORD = 'dckr_pat_JbxCvB3OURSVpLyHobV4UDSelCQ'
+        DOCKER_USERNAME = 'lunariiin'
     }
 
     stages {
@@ -27,9 +26,12 @@ pipeline {
         stage('Docker Login') {
             steps {
                 script {
-                    bat """
-                    echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
-                    """
+                   
+                    withCredentials([string(credentialsId: 'docker-token', variable: 'DOCKER_TOKEN')]) {
+                        bat """
+                        echo ${DOCKER_TOKEN} | docker login -u ${DOCKER_USERNAME} --password-stdin
+                        """
+                    }
                 }
             }
         }

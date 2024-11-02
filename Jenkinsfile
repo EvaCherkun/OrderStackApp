@@ -9,7 +9,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                  
                     checkout scm
                 }
             }
@@ -45,7 +44,9 @@ pipeline {
     post {
         always {
             script {
-                bat 'docker logout'
+                node { // Додано, щоб надати контекст для bat
+                    bat 'docker logout'
+                }
             }
         }
     }

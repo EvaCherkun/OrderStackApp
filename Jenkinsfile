@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'docker-image'
+        IMAGE_NAME = 'evacherkun2509/docker-image'
         DOCKER_USERNAME = 'evacherkun2509@gmail.com' 
         DOCKER_PASSWORD = '-@.3r}4yNdu;=yY' 
     }

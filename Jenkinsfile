@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'lunariiin/orderstackapp'
-        DOCKER_USERNAME = 'evacherkun2509@gmail.com' 
+        DOCKER_USERNAME = 'lunariiin' 
         DOCKER_PASSWORD = '-@.3r}4yNdu;=yY'
     }
 

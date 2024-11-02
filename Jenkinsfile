@@ -26,7 +26,8 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        bat "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
+                        // Замість використання echo, запустіть безпосередньо docker login
+                        bat "docker login -u ${DOCKER_USERNAME} --password-stdin <<< ${DOCKER_PASSWORD}"
                     }
                 }
             }
@@ -44,9 +45,7 @@ pipeline {
     post {
         always {
             script {
-                node { 
-                    bat 'docker logout'
-                }
+                bat 'docker logout'
             }
         }
     }

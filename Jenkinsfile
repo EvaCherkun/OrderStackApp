@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'evacherkun2509/docker-image'
+        IMAGE_NAME = 'lunariiin/orderstackapp'
         DOCKER_USERNAME = 'evacherkun2509@gmail.com' 
-        DOCKER_PASSWORD = '-@.3r}4yNdu;=yY' 
+        DOCKER_PASSWORD = '-@.3r}4yNdu;=yY'
     }
 
     stages {
@@ -51,4 +51,3 @@ pipeline {
         }
     }
 }
-

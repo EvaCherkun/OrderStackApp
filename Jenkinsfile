@@ -27,9 +27,8 @@ pipeline {
         stage('Docker Login') {
             steps {
                 script {
-                    bat """
-                    echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
-                    """
+                  bat "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
+
                 }
             }
         }

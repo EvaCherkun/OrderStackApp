@@ -1,12 +1,23 @@
 pipeline {
     agent any
 
+    tools {
+        git 'Default' 
+    }
+
     environment {
-        DOCKER_CREDENTIALS = credentials('dockerhub-credentials')  // Один креденшлс з типом "Username with password"
-        IMAGE_NAME = 'lunariiin/orderstackapp'
+        DOCKER_CREDENTIALS = credentials('dockerhub-credentials')  
+        IMAGE_NAME = 'eva_cherkun/orderstackapp'  
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+             
+                checkout scm
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -19,7 +30,7 @@ pipeline {
             steps {
                 script {
                     bat """
-                    echo %DOCKER_CREDENTIALS_PSW% | docker login -u %DOCKER_CREDENTIALS_USR% --password-stdin
+                    echo ${DOCKER_CREDENTIALS_PSW} | docker login -u ${DOCKER_CREDENTIALS_USR} --password-stdin
                     """
                 }
             }

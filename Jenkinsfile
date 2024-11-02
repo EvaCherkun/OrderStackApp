@@ -1,20 +1,17 @@
 pipeline {
     agent any
 
-    tools {
-        git 'Default' 
-    }
-
     environment {
         DOCKER_CREDENTIALS = credentials('dockerhub-credentials')  
-        IMAGE_NAME = 'eva_cherkun/orderstackapp'  
     }
 
     stages {
         stage('Checkout') {
             steps {
-                
-                checkout scm
+                script {
+                  
+                    checkout scm
+                }
             }
         }
 
@@ -30,7 +27,7 @@ pipeline {
             steps {
                 script {
                     bat """
-                    echo ${DOCKER_CREDENTIALS_PSW} | docker login -u ${DOCKER_CREDENTIALS_USR} --password-stdin
+                    echo %DOCKER_CREDENTIALS_PSW% | docker login -u %DOCKER_CREDENTIALS_USR% --password-stdin
                     """
                 }
             }
@@ -47,7 +44,7 @@ pipeline {
 
     post {
         always {
-            node {
+            script {
                 bat 'docker logout'
             }
         }

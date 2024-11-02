@@ -4,7 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME = 'docker-image'
         DOCKER_USERNAME = 'lunariiin'
-        DOCKER_PASSWORD = 'eva2509che' 
+        DOCKER_PASSWORD = '-@.3r}4yNdu;=yY' 
     }
 
     stages {

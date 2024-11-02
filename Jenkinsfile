@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDENTIALS = credentials('docker-credentials')  
+        DOCKER_CREDENTIALS = credentials('docker-credentials')
+        IMAGE_NAME = 'docker-image' 
     }
 
     stages {

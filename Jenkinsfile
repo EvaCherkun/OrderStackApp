@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = 'docker-image'
+        DOCKER_USERNAME = 'lunariiin'
+        DOCKER_PASSWORD = 'eva2509che' 
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -13,7 +19,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    bat "docker build -t docker-image:latest ."
+                    bat "docker build -t ${IMAGE_NAME}:latest ."
                 }
             }
         }
@@ -21,11 +27,9 @@ pipeline {
         stage('Docker Login') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                       
-                        echo "Logging in to Docker Hub as ${DOCKER_USERNAME}"
-                        bat "cmd /c echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
-                    }
+                    bat """
+                    echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
+                    """
                 }
             }
         }
@@ -33,7 +37,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    bat "docker push docker-image:latest"
+                    bat "docker push ${IMAGE_NAME}:latest"
                 }
             }
         }

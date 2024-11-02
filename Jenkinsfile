@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDENTIALS = credentials('docker-credentials')
         IMAGE_NAME = 'docker-image' 
     }
 
@@ -26,9 +25,9 @@ pipeline {
         stage('Docker Login') {
             steps {
                 script {
-                    bat """
-                    echo %DOCKER_CREDENTIALS_PSW% | docker login -u %DOCKER_CREDENTIALS_USR% --password-stdin
-                    """
+                    withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        bat "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
+                    }
                 }
             }
         }
@@ -45,7 +44,7 @@ pipeline {
     post {
         always {
             script {
-                node { // Додано, щоб надати контекст для bat
+                node { 
                     bat 'docker logout'
                 }
             }

@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-             
+                
                 checkout scm
             }
         }
@@ -47,7 +47,7 @@ pipeline {
 
     post {
         always {
-            script {
+            node {
                 bat 'docker logout'
             }
         }

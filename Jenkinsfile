@@ -2,18 +2,11 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USERNAME = 'lunariiin'
-        DOCKER_PASSWORD = credentials('dockerhub-credentials')
+        DOCKER_CREDENTIALS = credentials('dockerhub-credentials')  // Один креденшлс з типом "Username with password"
         IMAGE_NAME = 'lunariiin/orderstackapp'
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/EvaCherkun/OrderStackApp'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 script {
@@ -25,9 +18,8 @@ pipeline {
         stage('Docker Login') {
             steps {
                 script {
-                    // Store the password in a variable and use it directly
                     bat """
-                    echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
+                    echo %DOCKER_CREDENTIALS_PSW% | docker login -u %DOCKER_CREDENTIALS_USR% --password-stdin
                     """
                 }
             }
